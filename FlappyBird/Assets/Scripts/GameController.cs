@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     private bool isWaiting = false;
     private float originalScrollSpeed = 1.5f;
     private float originalSpawnRate = 5;
+    private AudioSource audioSource;
 
     [HideInInspector]
     public int level = 1;
@@ -55,6 +56,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         m_EndWait = new WaitForSeconds(m_EndDelay);
+        this.audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -63,6 +65,14 @@ public class GameController : MonoBehaviour
         if (!this.isWaiting && this.gameOver && InputController.isScreenTap())
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if (PauseMenu.isGamePaused)
+        {
+            this.audioSource.pitch = 0.5f;
+        } else
+        {
+            this.audioSource.pitch = 1f;
         }
     }
 

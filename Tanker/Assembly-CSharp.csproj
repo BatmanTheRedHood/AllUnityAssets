@@ -115,8 +115,10 @@
      <Compile Include="Assets\MyScripts\EnemyFire.cs" />
      <Compile Include="Assets\MyScripts\EnemyMovement.cs" />
      <Compile Include="Assets\MyScripts\FireBullet.cs" />
+     <Compile Include="Assets\MyScripts\GameController.cs" />
      <Compile Include="Assets\MyScripts\InputController.cs" />
      <Compile Include="Assets\MyScripts\PlayerMovement.cs" />
+     <Compile Include="Assets\MyScripts\SpawnManager.cs" />
      <None Include="Assets\Imported\Fonts\Bowlby_One\FontLicense.txt" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.0f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -777,6 +779,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{8357B150-0F98-BC32-80B7-D3FB2667AA04}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

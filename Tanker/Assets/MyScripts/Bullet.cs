@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Bullet : MonoBehaviour
 {
     private Rigidbody2D rgBody2d;
+
+    public ParticleSystem bulletImpact;
 
     // Start is called before the first frame update
 
@@ -25,6 +28,8 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         this.rgBody2d = GetComponent<Rigidbody2D>();
+
+        // Debug.Log("Tilemap: " + tilemap);
     }
 
     private void Update()
@@ -41,14 +46,15 @@ public class Bullet : MonoBehaviour
         {
             //Debug.Log("Direction: " + direction);
             this.rgBody2d.AddForce(direction.normalized * force);
+            this.rgBody2d.rotation = InputController.GetAngle(direction);
             // Debug.Log("Launch called!");
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         //we also add a debug log to know what the projectile touch
-        Debug.Log("Projectile Collision with " + other.gameObject);
+        Debug.Log("Projectile Collision with " + collision.gameObject);
 
         // Check if enemy and damage enemy. Tag Damageble..Damager
 
@@ -58,6 +64,50 @@ public class Bullet : MonoBehaviour
             enemyController.Fix();
         }
         */
+
+        ParticleSystem bulletImpactEffect = Instantiate(this.bulletImpact, collision.contacts[0].point, Quaternion.identity);
+        bulletImpactEffect.Play();
+
+        Vector3 hitPosition = Vector3.zero;
+        if (GameController.instance.tilemap != null && GameController.instance.tilemapGameObject == collision.gameObject)
+        {
+            Debug.Log("Projectile Collision with tile map contacts: " + collision.contacts);
+
+            foreach (ContactPoint2D hit in collision.contacts)
+            {
+                hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
+                hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
+                GameController.instance.tilemap.SetTile(GameController.instance.tilemap.WorldToCell(hitPosition), null);
+
+                Debug.Log("Projectile Collision with tile" + collision.gameObject);
+            }
+        } else if (!this.gameObject.tag.Contains(collision.gameObject.tag))
+        {
+            // Game object collision
+            if (collision.gameObject.GetComponent<Tilemap>() == null)
+            {
+                // Check if bird killed
+                if (collision.gameObject.CompareTag("Bird"))
+                {
+                    GameController.instance.BirdDied(collision.gameObject);
+                }
+                else if (collision.gameObject.CompareTag("Player"))
+                {
+                    GameController.instance.BirdDied(collision.gameObject);
+                }
+                else
+                {
+                    // Bullet-Bullet Bullet-Tank Collision
+                    GameController.instance.ExplodeTank(collision.gameObject.transform.position);
+                    Destroy(collision.gameObject);
+                }
+            }
+            else
+            {
+                // Tilemap base hit
+                GameController.instance.PlayBulletStoreImpact();
+            }
+        }
 
         Destroy(gameObject);
     }

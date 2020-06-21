@@ -9,6 +9,10 @@ TagManager:
   - Bullet
   - Ground
   - Pickup
+  - EnemyBullet
+  - PlayerBullet
+  - Fire
+  - Bird
   layers:
   - Default
   - TransparentFX
@@ -21,7 +25,7 @@ TagManager:
   - Player
   - Enemy
   - PlayerBullet
-  - 
+  - EnemyBullet
   - 
   - 
   - 
@@ -51,4 +55,7 @@ TagManager:
     locked: 0
   - name: Gameplay
     uniqueID: 1087635889
+    locked: 0
+  - name: ForeGround
+    uniqueID: 530178127
     locked: 0

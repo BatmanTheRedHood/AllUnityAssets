@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D rgbody;
-    private Vector2 lookDirection = new Vector2(0, -1);
+
+    [HideInInspector]
+    public Vector2 lookDirection = new Vector2(0, -1);
 
     public float speed = 5.0f;
 
@@ -14,6 +16,7 @@ public class EnemyMovement : MonoBehaviour
     {
         this.rgbody = GetComponent<Rigidbody2D>();
         this.rgbody.velocity = this.lookDirection * this.speed;
+        this.rgbody.rotation = InputController.GetAngle(this.lookDirection);
 
         // this.InvokeRandom();
         StartCoroutine(changeDirection());
@@ -33,6 +36,9 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator changeDirection()
     {
+        //yield return new WaitForSeconds(1.5f);
+        //this.rgbody.velocity = this.lookDirection * this.speed;
+
         yield return new WaitForSeconds(5f);
 
         while (true)
@@ -67,5 +73,6 @@ public class EnemyMovement : MonoBehaviour
 
         // this.lookDirection.Normalize();
         this.rgbody.velocity = this.lookDirection * this.speed;
+        this.rgbody.rotation = InputController.GetAngle(this.lookDirection);
     }
 }

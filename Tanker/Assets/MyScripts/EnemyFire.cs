@@ -33,11 +33,11 @@ public class EnemyFire : MonoBehaviour
 
         while (true)
         {
-            this.Fire();
-
             float randomInterval = Random.Range(1f, 2f);
             //Invoke("InvokeRandom", randomInterval);
             yield return new WaitForSeconds(randomInterval);
+
+            this.Fire();
         }
     }
 }

@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isDead = false;
     public float speed = 4.0f;
 
-    public Joystick joystick;
+    // public Joystick joystick;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +31,9 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-         horizontal = joystick.Horizontal;
+         horizontal = InputController.instance.horizontal;
         //horizontal = Input.GetAxis("Horizontal");
-         vertical = joystick.Vertical; //
+         vertical = InputController.instance.vertical; //
         //vertical = Input.GetAxis("Vertical");
 
         if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))

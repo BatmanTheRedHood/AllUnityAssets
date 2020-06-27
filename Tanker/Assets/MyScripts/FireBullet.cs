@@ -22,12 +22,6 @@ public class FireBullet : MonoBehaviour
         this.playerMovement = this.GetComponent<PlayerMovement>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Fire()
     {
         // Vector2 offset = this.playerMovement.lookDirection * 1.5f;
@@ -35,7 +29,10 @@ public class FireBullet : MonoBehaviour
 
         ParticleSystem muzzleBlazeEffect = Instantiate(this.muzzleBlaze, this.muzzleBlazePosition.position, Quaternion.identity);
         muzzleBlazeEffect.Play();
-        this.audioSource.PlayOneShot(this.gunFireClip);
+        this.audioSource.PlayOneShot(this.gunFireClip, 0.5f);
+
+        // AutoDestroy https://gamedev.stackexchange.com/questions/151041/how-to-destroy-particles-system-after-its-work-is-over#:~:text=In%20Unity%20Version%202017.2%2C%20the,are%20no%20alive%20particles%20anymore.
+        // Destroy(muzzleBlazeEffect, 2f);
 
         Bullet bullet = bulletObject.GetComponent<Bullet>();
         bullet.Launch(this.playerMovement.lookDirection, this.force);

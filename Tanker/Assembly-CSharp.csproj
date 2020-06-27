@@ -112,11 +112,14 @@
      <Compile Include="Assets\Imported\_INTERNAL_\Scripts\Utilities\InventoryResources.cs" />
      <Compile Include="Assets\Imported\_INTERNAL_\Scripts\Utilities\Utils.cs" />
      <Compile Include="Assets\MyScripts\Bullet.cs" />
+     <Compile Include="Assets\MyScripts\Damageable.cs" />
+     <Compile Include="Assets\MyScripts\DataCenter.cs" />
      <Compile Include="Assets\MyScripts\EnemyFire.cs" />
      <Compile Include="Assets\MyScripts\EnemyMovement.cs" />
      <Compile Include="Assets\MyScripts\FireBullet.cs" />
      <Compile Include="Assets\MyScripts\GameController.cs" />
      <Compile Include="Assets\MyScripts\InputController.cs" />
+     <Compile Include="Assets\MyScripts\Invisible.cs" />
      <Compile Include="Assets\MyScripts\PlayerMovement.cs" />
      <Compile Include="Assets\MyScripts\SpawnManager.cs" />
      <None Include="Assets\Imported\Fonts\Bowlby_One\FontLicense.txt" />

@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
 {
     private Rigidbody2D rgBody2d;
 
+    public int bulletImpactMagnitude = 1;
     public ParticleSystem bulletImpact;
 
     // Start is called before the first frame update
@@ -77,38 +78,49 @@ public class Bullet : MonoBehaviour
             {
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
-                GameController.instance.tilemap.SetTile(GameController.instance.tilemap.WorldToCell(hitPosition), null);
+
+                // https://answers.unity.com/questions/1572343/how-to-detect-on-which-exact-tile-a-collision-happ.html
+                this.DestroySurroundingTiles(hitPosition);
+                GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(hitPosition), null);
 
                 Debug.Log("Projectile Collision with tile" + collision.gameObject);
             }
         } else if (!this.gameObject.tag.Contains(collision.gameObject.tag))
         {
+            // Above to avoid Player to PlayerBullet collision and Enemy to EnemyBullet collision.
+            // This should be controlled from 2D Physics Collision settings.
+
             // Game object collision
             if (collision.gameObject.GetComponent<Tilemap>() == null)
             {
-                // Check if bird killed
-                if (collision.gameObject.CompareTag("Bird"))
-                {
-                    GameController.instance.BirdDied(collision.gameObject);
-                }
-                else if (collision.gameObject.CompareTag("Player"))
-                {
-                    GameController.instance.BirdDied(collision.gameObject);
-                }
-                else
-                {
-                    // Bullet-Bullet Bullet-Tank Collision
-                    GameController.instance.ExplodeTank(collision.gameObject.transform.position);
-                    Destroy(collision.gameObject);
-                }
+                Damageable damageable = collision.gameObject.GetComponent<Damageable>();
+                if (damageable != null)
+                    damageable.TakeDamage(this.bulletImpactMagnitude);
             }
             else
             {
-                // Tilemap base hit
-                GameController.instance.PlayBulletStoreImpact();
+                // Bullet Tilemap base hit
+                if (this.gameObject.tag.Contains("Player"))
+                    GameController.instance.PlayBulletStoneImpact();
             }
         }
 
         Destroy(gameObject);
+    }
+
+    // Bug fix: 
+    private void DestroySurroundingTiles(Vector3  hitPosition)
+    {
+        Vector3[] points = {
+            new Vector3(hitPosition.x -.1f, hitPosition.y, hitPosition.z),
+            new Vector3(hitPosition.x + .1f, hitPosition.y, hitPosition.z),
+            new Vector3(hitPosition.x, hitPosition.y - .1f, hitPosition.z),
+            new Vector3(hitPosition.x, hitPosition.y + .1f, hitPosition.z),
+        };
+
+        GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(points[0]), null);
+        GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(points[1]), null);
+        GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(points[2]), null);
+        GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(points[3]), null);
     }
 }

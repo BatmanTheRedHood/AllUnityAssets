@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal;
     private float vertical;
 
+    // Not present in all player prefab. Fail safe code required
+    private Animator animator;
+
     private Rigidbody2D rigidbody2d;
 
     public Vector2 lookDirection = new Vector2(0, 1);
@@ -21,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         this.rigidbody2d = GetComponent<Rigidbody2D>();
+        this.animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -51,6 +55,17 @@ public class PlayerMovement : MonoBehaviour
             // Debug.Log("Look Direction: " + this.lookDirection);
             lookDirection.Normalize();
             // Debug.Log("Look Direction normalized: " + this.lookDirection);
+
+            if (this.animator != null)
+            {
+                this.animator.SetBool("IsMoving", true);
+            }
+        } else
+        {
+            if (this.animator != null)
+            {
+                this.animator.SetBool("IsMoving", false);
+            }
         }
     }
 

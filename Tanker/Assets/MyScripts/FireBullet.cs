@@ -6,6 +6,9 @@ public class FireBullet : MonoBehaviour
 {
     private PlayerMovement playerMovement;
     private AudioSource audioSource;
+    
+    // Not present in all player prefab. Fail safe code required
+    private Animator animator;
 
     public float force = 500f;
     public GameObject bulletPrefab;
@@ -20,10 +23,17 @@ public class FireBullet : MonoBehaviour
     {
         this.audioSource = GetComponent<AudioSource>();
         this.playerMovement = this.GetComponent<PlayerMovement>();
+
+        this.animator = GetComponent<Animator>();
     }
 
     public void Fire()
     {
+        if (this.animator != null)
+        {
+            this.animator.SetTrigger("Fire");
+        }
+
         // Vector2 offset = this.playerMovement.lookDirection * 1.5f;
         GameObject bulletObject = Instantiate(this.bulletPrefab, this.firePosition.position /*+ new Vector3(offset.x, offset.y, 0)*/, Quaternion.identity);
 

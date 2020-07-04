@@ -145,6 +145,7 @@ public class GameController : MonoBehaviour
 
     public void Restart()
     {
+        Debug.Log("restart button clicked");
         // isGamePaused = false;
         Time.timeScale = 1f;
         DataCenter.ResetData();

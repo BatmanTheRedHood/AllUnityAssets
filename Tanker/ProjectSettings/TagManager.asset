@@ -13,6 +13,7 @@ TagManager:
   - PlayerBullet
   - Fire
   - Bird
+  - Stone
   layers:
   - Default
   - TransparentFX

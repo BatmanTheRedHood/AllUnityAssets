@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //we also add a debug log to know what the projectile touch
-        Debug.Log("Projectile Collision with " + collision.gameObject);
+        // Debug.Log("Projectile Collision with " + collision.gameObject);
 
         // Check if enemy and damage enemy. Tag Damageble..Damager
 
@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour
         Vector3 hitPosition = Vector3.zero;
         if (GameController.instance.tilemap != null && GameController.instance.tilemapGameObject == collision.gameObject)
         {
-            Debug.Log("Projectile Collision with tile map contacts: " + collision.contacts);
+            // Debug.Log("Projectile Collision with tile map contacts: " + collision.contacts);
 
             foreach (ContactPoint2D hit in collision.contacts)
             {
@@ -83,7 +83,7 @@ public class Bullet : MonoBehaviour
                 this.DestroySurroundingTiles(hitPosition);
                 GameController.instance.tilemap.SetTile(GameController.instance.tilemap.layoutGrid.WorldToCell(hitPosition), null);
 
-                Debug.Log("Projectile Collision with tile" + collision.gameObject);
+                // Debug.Log("Projectile Collision with tile" + collision.gameObject);
             }
         } else if (!this.gameObject.tag.Contains(collision.gameObject.tag))
         {

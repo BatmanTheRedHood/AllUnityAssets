@@ -6,6 +6,7 @@ public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D rgbody;
     private Vector2 prevVelocity;
+    private float collisionTimer = 0;
 
     [HideInInspector]
     public Vector2 lookDirection = new Vector2(0, -1);
@@ -27,12 +28,23 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.collisionTimer += Time.deltaTime;
         if( this.prevVelocity != this.rgbody.velocity)
         {
             this.rgbody.velocity = this.prevVelocity;
         }
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Debug.Log("Enemy collision with " + collision.gameObject.tag + this.collisionTimer);
+        if (collision.gameObject.CompareTag("Stone") && this.collisionTimer > .5f)
+        {
+            Debug.Log("Enemy shoudd change direction " + collision.gameObject.tag);
+            Invoke("setRandomDirection", .4f);
+            this.collisionTimer = 0;
+        }
+    }
 
     private void InvokeRandom()
     {
@@ -50,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
         {
             this.setRandomDirection();
 
-            float randomInterval = Random.Range(0f, 10f);
+            float randomInterval = Random.Range(1f, 10f);
             //Invoke("InvokeRandom", randomInterval);
             yield return new WaitForSeconds(randomInterval);
         }
